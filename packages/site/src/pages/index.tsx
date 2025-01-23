@@ -299,7 +299,7 @@ const Index = () => {
             chainId: "0x1"
           };
 
-          // Create a properly structured KeyringRequest
+          // First submit the request
           const keyringRequest = {
             account: accountId,
             id: crypto.randomUUID(),
@@ -310,7 +310,9 @@ const Index = () => {
             scope: "eip155:31337"
           };
 
-          return await client.submitRequest(keyringRequest);
+          // Use the client methods directly
+          await client.submitRequest(keyringRequest);
+          return await client.approveRequest(keyringRequest.id);
         },
         label: 'Sign Transaction',
       },

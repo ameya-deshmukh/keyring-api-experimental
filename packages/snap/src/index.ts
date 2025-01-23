@@ -82,7 +82,7 @@ export const onKeyringRequest: OnKeyringRequestHandler = async ({
   // Check if origin is allowed to call method.
   if (!hasPermission(origin, request.method)) {
     throw new Error(
-      `Origin '${origin}' is not allowed to call '${request.method}'`,
+      `Origin '${origin}' is NOT allowed to call '${request.method}'`,
     );
   }
 
