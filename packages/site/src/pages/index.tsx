@@ -269,6 +269,54 @@ const Index = () => {
       },
     },
     {
+      name: 'Sign Transaction',
+      description: 'Sign a transaction with the selected account',
+      inputs: [
+        {
+          id: 'sign-tx-account-id',
+          title: 'Account Address',
+          type: InputType.TextField,
+          placeholder: 'E.g. 0x123...',
+          options: snapState.accounts.map((account) => {
+            return { value: account.address };
+          }),
+          onChange: (event: any) => setAccountId(event.currentTarget.value),
+        }
+      ],
+      action: {
+        callback: async () => {
+          if (!accountId) {
+            throw new Error('Please select an account first');
+          }
+
+          const tx = {
+            from: accountId,
+            to: "0x0000000000000000000000000000000000000000",
+            value: "0x0",
+            gas: "0x5208",
+            gasPrice: "0x4A817C800",
+            nonce: "0x0",
+            chainId: "0x1"
+          };
+
+          // Create a properly structured KeyringRequest
+          const keyringRequest = {
+            account: accountId,
+            id: crypto.randomUUID(),
+            request: {
+              method: "eth_signTransaction",
+              params: [tx]
+            },
+            scope: "eip155:31337"
+          };
+
+          return await client.submitRequest(keyringRequest);
+        },
+        label: 'Sign Transaction',
+      },
+      successMessage: 'Transaction signed successfully',
+    },
+    {
       name: 'List requests',
       description: 'List pending requests',
       action: {
